@@ -1,0 +1,17 @@
+{
+  "appId": "com.deskpilot.app",
+  "appName": "DeskPilot",
+  "webDir": "www",
+  "bundledWebRuntime": false,
+  "android": {
+    "allowMixedContent": false
+  },
+  "plugins": {
+    "LocalNotifications": {
+      "smallIcon": "ic_stat_icon_config_sample",
+      "iconColor": "#5b6cff",
+      "sound": "beep.wav",
+      "allowWhileIdle": true
+    }
+  }
+}

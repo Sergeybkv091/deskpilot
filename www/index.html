@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#5b6cff">
+<title>DeskPilot</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <div class="brand">Desk<span>Pilot</span></div>
+    <div style="display:flex;align-items:center;gap:10px">
+      <button class="theme-toggle" id="notifyBtn" title="Уведомления">🔕</button>
+      <div class="clock" id="clock"></div>
+      <button class="theme-toggle" id="themeBtn" title="Тема">🌙</button>
+    </div>
+  </header>
+
+  <section class="card quick">
+    <h2>⚡ Быстрая запись</h2>
+    <form class="quick-form" id="quickForm">
+      <input id="quickInput" type="text" placeholder="Запишите мысль и нажмите Enter…" autocomplete="off">
+      <button class="btn" type="submit">Добавить</button>
+    </form>
+  </section>
+
+  <section class="card schedule">
+    <div class="sched-head">
+      <h2 style="margin:0">📅 График смен</h2>
+      <div class="sched-month" id="schedMonth"></div>
+      <div class="month-nav">
+        <button id="prevMonth">‹</button>
+        <button id="nextMonth">›</button>
+      </div>
+    </div>
+    <div class="weekdays"><span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span>Сб</span><span>Вс</span></div>
+    <div class="days" id="days"></div>
+    <div class="legend" id="legend"></div>
+    <div class="hours-summary" id="hoursSummary"></div>
+    <div class="tools">
+      <label for="templateSelect">Шаблон:</label>
+      <select id="templateSelect">
+        <option value="5_2">5/2</option>
+        <option value="2_2">2/2</option>
+        <option value="1_3">Сутки через трое</option>
+        <option value="weekend">Только выходные</option>
+      </select>
+      <label for="templateStart">с</label>
+      <input type="date" id="templateStart">
+      <button class="btn" id="applyTemplate">Применить</button>
+      <button class="btn btn-ghost" id="exportCsv">CSV ↓</button>
+      <button class="btn btn-ghost" id="importCsvBtn">CSV ↑</button>
+      <input type="file" id="importCsvInput" accept=".csv,text/csv" hidden>
+      <button class="btn btn-danger" id="clearMonth">Очистить</button>
+    </div>
+  </section>
+
+  <div class="grid">
+    <section class="card">
+      <h2>📝 Заметки</h2>
+      <ul class="notes" id="notes"></ul>
+    </section>
+
+    <section class="card">
+      <h2>⏰ Будильники</h2>
+      <form class="alarm-form" id="alarmForm">
+        <input type="time" id="alarmTime" required>
+        <input type="text" id="alarmLabel" placeholder="Подпись" maxlength="30">
+        <button class="btn" type="submit">+</button>
+      </form>
+      <ul class="alarm-list" id="alarms"></ul>
+    </section>
+
+    <section class="card" style="grid-column:1/-1">
+      <h2>🎯 Фокус-таймер</h2>
+      <div class="timer-wrap">
+        <div class="ring">
+          <svg width="170" height="170">
+            <circle cx="85" cy="85" r="75" stroke="var(--line)" stroke-width="12" fill="none"/>
+            <circle id="progress" cx="85" cy="85" r="75" stroke="var(--accent)" stroke-width="12"
+                    fill="none" stroke-linecap="round" stroke-dasharray="471" stroke-dashoffset="0"/>
+          </svg>
+          <div class="time" id="timerText">25:00</div>
+        </div>
+        <div class="timer-btns">
+          <button class="btn" id="startBtn">Старт</button>
+          <button class="btn btn-ghost" id="resetBtn">Сброс</button>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<div class="shift-menu" id="shiftMenu"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
