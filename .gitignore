@@ -1,0 +1,14 @@
+﻿node_modules/
+android/
+.gradle/
+android/app/build/
+android/key.properties
+*.keystore
+*.jks
+www/beep.wav
+android/app/src/main/res/raw/beep.wav
+.DS_Store
+Thumbs.db
+*.log
+local.properties
+npm-debug.log
