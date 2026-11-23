@@ -16,7 +16,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
 
       - name: Setup JDK 17
         uses: actions/setup-java@v4
@@ -25,16 +24,36 @@ jobs:
           java-version: '17'
 
       - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
+        run: |
+          set -e
+          # cmdline-tools последней версии
+          mkdir -p $HOME/android-sdk/cmdline-tools
+          cd $HOME/android-sdk/cmdline-tools
+          curl -sSL -o cmdtools.zip https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
+          unzip -q cmdtools.zip
+          mv cmdline-tools latest
+          cd $HOME/android-sdk
+          # базовые пакеты
+          yes | $HOME/android-sdk/cmdline-tools/latest/bin/sdkmanager --licenses > /dev/null 2>&1 || true
+          $HOME/android-sdk/cmdline-tools/latest/bin/sdkmanager --install \
+            "platform-tools" \
+            "platforms;android-34" \
+            "build-tools;34.0.0" \
+            "cmdline-tools;latest" > /dev/null
+          # переменные окружения
+          echo "ANDROID_HOME=$HOME/android-sdk" >> $GITHUB_ENV
+          echo "ANDROID_SDK_ROOT=$HOME/android-sdk" >> $GITHUB_ENV
+          echo "$HOME/android-sdk/platform-tools" >> $GITHUB_PATH
+          echo "$HOME/android-sdk/cmdline-tools/latest/bin" >> $GITHUB_PATH
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install --no-audit --no-fund
 
       - name: Generate beep.wav
         run: node scripts/gen-beep.js
 
       - name: Add Android platform
-        run: npx cap add android || true
+        run: npx cap add android
 
       - name: Generate app assets (icons, splash)
         run: npx @capacitor/assets generate --android
@@ -42,11 +61,11 @@ jobs:
       - name: Sync web assets
         run: npx cap sync android
 
-      - name: Patch AndroidManifest (permissions + boot receiver)
+      - name: Patch AndroidManifest
         run: node scripts/patch-manifest.js
 
       - name: Build debug APK
-        run: cd android && ./gradlew assembleDebug
+        run: cd android && chmod +x gradlew && ./gradlew assembleDebug
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
