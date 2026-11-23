@@ -53,7 +53,9 @@ jobs:
         run: node scripts/gen-beep.js
 
       - name: Add Android platform
-        run: npx cap add android
+        run: |
+          rm -rf android
+          npx cap add android
 
       - name: Generate app assets (icons, splash)
         run: npx @capacitor/assets generate --android
